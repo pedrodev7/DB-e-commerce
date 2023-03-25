@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="ecommerce-ada-926" id="Project-c54" database="PostgreSQL" >
+	<schema name="ecommerce-ada-926" >
+		<table name="cliente" >
+			<column name="id" type="serial" jt="4" mandatory="y" />
+			<column name="nome" type="varchar" length="895" jt="12" mandatory="y" />
+			<column name="cpf" type="char" length="11" jt="1" mandatory="y" />
+			<column name="id_endereco" prior="endereco" type="integer" length="200" jt="4" mandatory="y" />
+			<index name="unq_cliente_cpf" unique="UNIQUE_KEY" >
+				<column name="cpf" />
+			</index>
+			<index name="pk_cliente" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_cliente" unique="UNIQUE_KEY" >
+				<column name="id_endereco" />
+			</index>
+			<fk name="fk_cliente_endereco" to_schema="ecommerce-ada-926" to_table="endereco" >
+				<fk_column name="id_endereco" pk="id" />
+			</fk>
+		</table>
+		<table name="endereco" prior="tbl" >
+			<column name="id" type="serial" jt="4" mandatory="y" />
+			<column name="cep" type="char" length="8" jt="1" mandatory="y" />
+			<column name="logradouro" type="varchar" length="200" jt="12" mandatory="y" />
+			<column name="numero" type="varchar" length="30" jt="12" mandatory="y" >
+				<defo><![CDATA['Sem numero']]></defo>
+			</column>
+			<column name="cidade" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="uf" type="char" length="2" jt="1" mandatory="y" />
+			<index name="pk_endereco" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="estoque" prior="tbl" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="quantidade" type="integer" jt="4" mandatory="y" />
+			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<index name="pk_estoque" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_estoque_quantidade" to_schema="ecommerce-ada-926" to_table="produto" >
+				<fk_column name="id_produto" pk="id" />
+			</fk>
+		</table>
+		<table name="item_pedido" prior="tbl" >
+			<column name="id_pedido" prior="id_pedid" type="integer" jt="4" mandatory="y" />
+			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<column name="quantidade" type="integer" jt="4" mandatory="y" />
+			<column name="valor" type="numeric" jt="2" mandatory="y" />
+			<index name="pk_item_pedido" unique="PRIMARY_KEY" >
+				<column name="id_pedido" />
+				<column name="id_produto" />
+			</index>
+			<fk name="fk_item_pedido_pedido" to_schema="ecommerce-ada-926" to_table="pedido" >
+				<fk_column name="id_pedido" pk="id" />
+			</fk>
+			<fk name="fk_item_pedido_produto" to_schema="ecommerce-ada-926" to_table="produto" >
+				<fk_column name="id_produto" pk="id" />
+			</fk>
+		</table>
+		<table name="pedido" prior="pedidos" >
+			<column name="id" type="serial" jt="4" mandatory="y" />
+			<column name="previsao_de_entrega" type="date" jt="91" mandatory="y" />
+			<column name="meio_pagamento" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="status" type="varchar" length="100" jt="12" mandatory="y" />
+			<column name="id_cliente" type="integer" jt="4" />
+			<index name="pk_pedido" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_pedido_cliente" to_schema="ecommerce-ada-926" to_table="cliente" >
+				<fk_column name="id_cliente" pk="id" />
+			</fk>
+		</table>
+		<table name="produto" prior="tbl" >
+			<column name="id" type="serial" jt="4" mandatory="y" />
+			<column name="descricao" type="varchar" length="1000" jt="12" mandatory="y" />
+			<column name="codigo_barra" type="varchar" length="44" jt="12" mandatory="y" />
+			<column name="valor" type="numeric" jt="2" mandatory="y" />
+			<index name="pk_produto" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_produto_codigo_barra" unique="UNIQUE_KEY" >
+				<column name="codigo_barra" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-16a5" show_column_type="y" show_relation="columns" >
+		<entity schema="ecommerce-ada-926" name="cliente" color="C1D8EE" x="48" y="48" />
+		<entity schema="ecommerce-ada-926" name="endereco" color="C1D8EE" x="64" y="320" />
+		<entity schema="ecommerce-ada-926" name="estoque" color="C1D8EE" x="992" y="256" />
+		<entity schema="ecommerce-ada-926" name="item_pedido" color="C1D8EE" x="400" y="272" />
+		<entity schema="ecommerce-ada-926" name="pedido" color="C1D8EE" x="320" y="48" />
+		<entity schema="ecommerce-ada-926" name="produto" color="C1D8EE" x="704" y="256" />
+	</layout>
+</project>
