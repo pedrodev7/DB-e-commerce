@@ -83,6 +83,7 @@ CREATE  TABLE pedido (
 	previsao_de_entrega  date  NOT NULL  ,
 	meio_pagamento       varchar(100)  NOT NULL  ,
 	status               varchar(100)  NOT NULL  ,
+	data_criacao		 date  NOT NULL  ,
 	id_cliente           integer  NOT NULL  ,
 	id_cupom             integer    ,
 	CONSTRAINT pk_pedido PRIMARY KEY ( id ),
