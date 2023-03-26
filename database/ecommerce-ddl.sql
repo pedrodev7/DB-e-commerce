@@ -105,3 +105,29 @@ CREATE  TABLE item_pedido (
 ALTER TABLE item_pedido ADD CONSTRAINT fk_item_pedido_pedido FOREIGN KEY ( id_pedido ) REFERENCES pedido( id );
 
 ALTER TABLE item_pedido ADD CONSTRAINT fk_item_pedido_produto FOREIGN KEY ( id_produto ) REFERENCES produto( id );
+
+-- CARRINHO / ITEM_CARRINHO
+
+CREATE  TABLE carrinho ( 
+	id                   integer  NOT NULL  ,
+	id_cliente           integer  NOT NULL  ,
+	CONSTRAINT pk_carrinho PRIMARY KEY ( id ),
+	CONSTRAINT unq_carrinho_cliente UNIQUE ( id_cliente ) 
+ );
+
+ALTER TABLE carrinho ADD CONSTRAINT fk_carrinho_cliente FOREIGN KEY ( id_cliente ) REFERENCES cliente( id );
+
+CREATE  TABLE item_carrinho ( 
+	id                   integer  NOT NULL  ,
+	id_produto           integer  NOT NULL  ,
+	quantidade           integer  NOT NULL  ,
+	data_insercao        date DEFAULT CURRENT_DATE   ,
+	id_carrinho          integer  NOT NULL  ,
+	CONSTRAINT pk_item_carrinho PRIMARY KEY ( id ),
+	CONSTRAINT unq_item_carrinho_produto UNIQUE ( id_produto ) 
+ );
+
+ALTER TABLE item_carrinho ADD CONSTRAINT fk_item_carrinho_carrinho FOREIGN KEY ( id_carrinho ) REFERENCES carrinho( id );
+
+ALTER TABLE item_carrinho ADD CONSTRAINT fk_item_carrinho_produto FOREIGN KEY ( id_produto ) REFERENCES produto( id );
+
