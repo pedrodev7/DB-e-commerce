@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="ecommerce-ada-926" id="Project-c54" database="PostgreSQL" >
 	<schema name="ecommerce-ada-926" >
+		<table name="carrinho" prior="tbl" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id_cliente" type="integer" jt="4" mandatory="y" />
+			<index name="pk_carrinho" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_carrinho_cliente" unique="UNIQUE_KEY" >
+				<column name="id_cliente" />
+			</index>
+			<fk name="fk_carrinho_cliente" to_schema="ecommerce-ada-926" to_table="cliente" >
+				<fk_column name="id_cliente" pk="id" />
+			</fk>
+		</table>
 		<table name="cliente" >
 			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="nome" type="varchar" length="895" jt="12" mandatory="y" />
@@ -14,6 +27,20 @@
 			</index>
 			<fk name="fk_cliente_endereco" to_schema="ecommerce-ada-926" to_table="endereco" >
 				<fk_column name="id_endereco" pk="id" />
+			</fk>
+		</table>
+		<table name="cliente_carrinho" prior="cliente_" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id_carrinho" type="integer" jt="4" mandatory="y" />
+			<column name="id_cliente" type="integer" jt="4" mandatory="y" />
+			<index name="pk_cliente_carrinho" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_cliente_carrinho_carrinho" to_schema="ecommerce-ada-926" to_table="carrinho" >
+				<fk_column name="id_carrinho" pk="id" />
+			</fk>
+			<fk name="fk_cliente_carrinho_produto" to_schema="ecommerce-ada-926" to_table="cliente" >
+				<fk_column name="id_cliente" pk="id" />
 			</fk>
 		</table>
 		<table name="cupom" prior="tbl" >
@@ -90,6 +117,27 @@
 				<fk_column name="id_produto" pk="id" />
 			</fk>
 		</table>
+		<table name="item_carrinho" prior="tbl" >
+			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<column name="quantidade" type="integer" jt="4" mandatory="y" />
+			<column name="data_insercao" type="date" jt="91" >
+				<defo><![CDATA[CURRENT_DATE]]></defo>
+			</column>
+			<column name="id_carrinho" type="integer" jt="4" mandatory="y" />
+			<index name="pk_item_carrinho" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="unq_item_carrinho_produto" unique="UNIQUE_KEY" >
+				<column name="id_produto" />
+			</index>
+			<fk name="fk_item_carrinho_carrinho" to_schema="ecommerce-ada-926" to_table="carrinho" >
+				<fk_column name="id_carrinho" pk="id" />
+			</fk>
+			<fk name="fk_item_carrinho_produto" to_schema="ecommerce-ada-926" to_table="produto" >
+				<fk_column name="id_produto" pk="id" />
+			</fk>
+		</table>
 		<table name="item_pedido" prior="tbl" >
 			<column name="id_pedido" prior="id_pedid" type="integer" jt="4" mandatory="y" />
 			<column name="id_produto" type="integer" jt="4" mandatory="y" />
@@ -113,6 +161,9 @@
 			<column name="status" type="varchar" length="100" jt="12" mandatory="y" />
 			<column name="id_cliente" type="integer" jt="4" mandatory="y" />
 			<column name="id_cupom" type="integer" jt="4" />
+			<column name="data_criacao" type="date" jt="91" >
+				<defo><![CDATA[CURRENT_DATE]]></defo>
+			</column>
 			<index name="pk_pedido" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
@@ -141,12 +192,14 @@
 	</schema>
 	<connector name="MyDb" database="MySql" host="localhost" port="3306" user="root" useSystemProxy="false" />
 	<layout name="Default Layout" id="Layout-16a5" show_column_type="y" show_relation="columns" >
+		<entity schema="ecommerce-ada-926" name="carrinho" color="C1D8EE" x="832" y="576" />
 		<entity schema="ecommerce-ada-926" name="cliente" color="C1D8EE" x="240" y="256" />
 		<entity schema="ecommerce-ada-926" name="cupom" color="C1D8EE" x="560" y="528" />
 		<entity schema="ecommerce-ada-926" name="endereco" color="C1D8EE" x="64" y="80" />
 		<entity schema="ecommerce-ada-926" name="estoque" color="C1D8EE" x="1088" y="80" />
 		<entity schema="ecommerce-ada-926" name="fornecedor" color="C1D8EE" x="48" y="416" />
 		<entity schema="ecommerce-ada-926" name="fornecedor_produto" color="C1D8EE" x="960" y="416" />
+		<entity schema="ecommerce-ada-926" name="item_carrinho" color="C1D8EE" x="1088" y="560" />
 		<entity schema="ecommerce-ada-926" name="item_pedido" color="C1D8EE" x="464" y="288" />
 		<entity schema="ecommerce-ada-926" name="pedido" color="C1D8EE" x="464" y="80" />
 		<entity schema="ecommerce-ada-926" name="produto" color="C1D8EE" x="800" y="80" />
@@ -161,9 +214,13 @@
 			<entity schema="ecommerce-ada-926" name="fornecedor_produto" />
 		</group>
 		<group name="Pedido" color="00FF00" >
-			<entity schema="ecommerce-ada-926" name="pedido" />
 			<entity schema="ecommerce-ada-926" name="item_pedido" />
 			<entity schema="ecommerce-ada-926" name="cupom" />
+			<entity schema="ecommerce-ada-926" name="pedido" />
+		</group>
+		<group name="Carrinho" color="4D1A4D" >
+			<entity schema="ecommerce-ada-926" name="carrinho" />
+			<entity schema="ecommerce-ada-926" name="item_carrinho" />
 		</group>
 	</layout>
 </project>
