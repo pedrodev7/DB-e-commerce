@@ -2,7 +2,7 @@
 <project name="ecommerce-ada-926" id="Project-c54" database="PostgreSQL" >
 	<schema name="ecommerce-ada-926" >
 		<table name="carrinho" prior="tbl" >
-			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="id_cliente" type="integer" jt="4" mandatory="y" />
 			<index name="pk_carrinho" unique="PRIMARY_KEY" >
 				<column name="id" />
@@ -44,7 +44,7 @@
 			</fk>
 		</table>
 		<table name="cupom" prior="tbl" >
-			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="data_inicio" prior="data_criacao" type="date" jt="91" >
 				<defo><![CDATA[CURRENT_DATE]]></defo>
 			</column>
@@ -76,7 +76,7 @@
 			</index>
 		</table>
 		<table name="estoque" prior="tbl" >
-			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="quantidade" type="integer" jt="4" mandatory="y" />
 			<column name="id_produto" type="integer" jt="4" mandatory="y" />
 			<index name="pk_estoque" unique="PRIMARY_KEY" >
@@ -87,7 +87,7 @@
 			</fk>
 		</table>
 		<table name="fornecedor" prior="tbl" >
-			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="cnpj" type="integer" jt="4" mandatory="y" />
 			<column name="id_endereco" prior="endereco" type="integer" jt="4" mandatory="y" />
 			<index name="pk_fornecedor" unique="PRIMARY_KEY" >
@@ -104,8 +104,8 @@
 			</fk>
 		</table>
 		<table name="fornecedor_produto" prior="tbl" >
-			<column name="id_produto" type="integer" jt="4" mandatory="y" />
-			<column name="id_fornecedor" type="integer" jt="4" mandatory="y" />
+			<column name="id_produto" type="serial" jt="4" mandatory="y" />
+			<column name="id_fornecedor" type="serial" jt="4" mandatory="y" />
 			<index name="pk_fornecedor_produto" unique="PRIMARY_KEY" >
 				<column name="id_produto" />
 				<column name="id_fornecedor" />
@@ -118,7 +118,7 @@
 			</fk>
 		</table>
 		<table name="item_carrinho" prior="tbl" >
-			<column name="id" type="integer" jt="4" mandatory="y" />
+			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="id_produto" type="integer" jt="4" mandatory="y" />
 			<column name="quantidade" type="integer" jt="4" mandatory="y" />
 			<column name="data_insercao" type="date" jt="91" >
@@ -139,8 +139,8 @@
 			</fk>
 		</table>
 		<table name="item_pedido" prior="tbl" >
-			<column name="id_pedido" prior="id_pedid" type="integer" jt="4" mandatory="y" />
-			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<column name="id_pedido" prior="id_pedid" type="serial" jt="4" mandatory="y" />
+			<column name="id_produto" type="serial" jt="4" mandatory="y" />
 			<column name="quantidade" type="integer" jt="4" mandatory="y" />
 			<column name="valor" type="numeric" jt="2" mandatory="y" />
 			<index name="pk_item_pedido" unique="PRIMARY_KEY" >
@@ -205,8 +205,8 @@
 		<entity schema="ecommerce-ada-926" name="produto" color="C1D8EE" x="800" y="80" />
 		<group name="Cliente / Fornecedor" color="008080" >
 			<entity schema="ecommerce-ada-926" name="endereco" />
-			<entity schema="ecommerce-ada-926" name="fornecedor" />
 			<entity schema="ecommerce-ada-926" name="cliente" />
+			<entity schema="ecommerce-ada-926" name="fornecedor" />
 		</group>
 		<group name="Produto" color="800000" >
 			<entity schema="ecommerce-ada-926" name="produto" />
@@ -214,9 +214,9 @@
 			<entity schema="ecommerce-ada-926" name="fornecedor_produto" />
 		</group>
 		<group name="Pedido" color="00FF00" >
+			<entity schema="ecommerce-ada-926" name="pedido" />
 			<entity schema="ecommerce-ada-926" name="item_pedido" />
 			<entity schema="ecommerce-ada-926" name="cupom" />
-			<entity schema="ecommerce-ada-926" name="pedido" />
 		</group>
 		<group name="Carrinho" color="4D1A4D" >
 			<entity schema="ecommerce-ada-926" name="carrinho" />
