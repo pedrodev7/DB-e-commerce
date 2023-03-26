@@ -22,7 +22,7 @@ CREATE  TABLE cliente (
 ALTER TABLE cliente ADD CONSTRAINT fk_cliente_endereco FOREIGN KEY ( id_endereco ) REFERENCES endereco( id );
 
 CREATE  TABLE fornecedor ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	cnpj                 integer  NOT NULL  ,
 	id_endereco          integer  NOT NULL  ,
 	CONSTRAINT pk_fornecedor PRIMARY KEY ( id ),
@@ -44,7 +44,7 @@ CREATE  TABLE produto (
  );
 
 CREATE  TABLE estoque ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	quantidade           integer  NOT NULL  ,
 	id_produto           integer  NOT NULL  ,
 	CONSTRAINT pk_estoque PRIMARY KEY ( id )
@@ -65,7 +65,7 @@ ALTER TABLE fornecedor_produto ADD CONSTRAINT fk_fornecedor_produto_produto FORE
 -- PEDIDO / ITEM_PEDIDO / CUPOM
 
 CREATE  TABLE cupom ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	data_inicio          date DEFAULT CURRENT_DATE   ,
 	data_expiracao       date  NOT NULL  ,
 	descricao            varchar(1000)  NOT NULL  ,
@@ -109,7 +109,7 @@ ALTER TABLE item_pedido ADD CONSTRAINT fk_item_pedido_produto FOREIGN KEY ( id_p
 -- CARRINHO / ITEM_CARRINHO
 
 CREATE  TABLE carrinho ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	id_cliente           integer  NOT NULL  ,
 	CONSTRAINT pk_carrinho PRIMARY KEY ( id ),
 	CONSTRAINT unq_carrinho_cliente UNIQUE ( id_cliente ) 
@@ -118,7 +118,7 @@ CREATE  TABLE carrinho (
 ALTER TABLE carrinho ADD CONSTRAINT fk_carrinho_cliente FOREIGN KEY ( id_cliente ) REFERENCES cliente( id );
 
 CREATE  TABLE item_carrinho ( 
-	id                   integer  NOT NULL  ,
+	id                   serial  NOT NULL  ,
 	id_produto           integer  NOT NULL  ,
 	quantidade           integer  NOT NULL  ,
 	data_insercao        date DEFAULT CURRENT_DATE   ,
