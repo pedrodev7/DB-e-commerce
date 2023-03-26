@@ -113,6 +113,9 @@
 			<column name="status" type="varchar" length="100" jt="12" mandatory="y" />
 			<column name="id_cliente" type="integer" jt="4" mandatory="y" />
 			<column name="id_cupom" type="integer" jt="4" />
+			<column name="data_criacao" type="date" jt="91" >
+				<defo><![CDATA[CURRENT_DATE]]></defo>
+			</column>
 			<index name="pk_pedido" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
@@ -161,9 +164,9 @@
 			<entity schema="ecommerce-ada-926" name="fornecedor_produto" />
 		</group>
 		<group name="Pedido" color="00FF00" >
-			<entity schema="ecommerce-ada-926" name="pedido" />
 			<entity schema="ecommerce-ada-926" name="item_pedido" />
 			<entity schema="ecommerce-ada-926" name="cupom" />
+			<entity schema="ecommerce-ada-926" name="pedido" />
 		</group>
 	</layout>
 </project>
