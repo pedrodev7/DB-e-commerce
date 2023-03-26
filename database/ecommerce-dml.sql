@@ -1,12 +1,21 @@
 -- SETUP PARA CONSEGUIR RODAR O SQL MAIS DE UMA VEZ
 
+delete from pedido;
+delete from item_carrinho;
+delete from cupom;
+delete from carrinho;
 delete from cliente;
 delete from endereco;
 delete from produto;
 
+
 ALTER SEQUENCE endereco_id_seq RESTART WITH 1;
 ALTER SEQUENCE cliente_id_seq RESTART WITH 1;
 ALTER SEQUENCE produto_id_seq RESTART WITH 1;
+ALTER SEQUENCE cupom_id_seq RESTART WITH 1;
+ALTER SEQUENCE carrinho_id_seq RESTART WITH 1;
+ALTER SEQUENCE item_carrinho_id_seq RESTART WITH 1;
+ALTER SEQUENCE pedido_id_seq RESTART WITH 1;
 
 -- ENDEREÇO
 
@@ -39,4 +48,48 @@ VALUES
     ('GPU NVidia 1060', '333333333333', 950),
     ('Processador AMD Ryzen', '444444444444', 450);
 
+-- CUPOM
+INSERT INTO public.cupom
+(data_inicio, data_expiracao, descricao, valor, cliente_id)
+VALUES
+    (CURRENT_DATE, '2023-04-28', 'Cupom R$ 10', 10, 1),
+    (CURRENT_DATE, '2023-04-28', 'Cupom R$ 10', 10, 2),
+    (CURRENT_DATE, '2023-04-28', 'Cupom R$ 15', 15, 3);
+    
+-- CARRINHO
+INSERT INTO public.carrinho
+(id_cliente)
+VALUES
+    (1),
+    (2),
+    (3),
+    (4),
+    (5);
 
+-- ITEM CARRINHO
+INSERT INTO public.item_carrinho
+(id_produto, quantidade, data_insercao, id_carrinho)
+VALUES
+    (3, 1, CURRENT_DATE, 4),
+    (4, 1, CURRENT_DATE, 4),
+    (5, 1, CURRENT_DATE, 4),
+    (1, 1, CURRENT_DATE, 5),
+    (2, 1, CURRENT_DATE, 5),
+    (3, 1, CURRENT_DATE, 5);
+
+-- PEDIDO
+INSERT INTO public.pedido
+(previsao_de_entrega, meio_pagamento, status, data_criacao, id_cliente, id_cupom)
+VALUES
+    ('2023-04-28', 'Dinheiro', 'Finalizado', CURRENT_DATE, 1, 1),
+    ('2023-04-28', 'Dinheiro', 'Finalizado', CURRENT_DATE, 2, 2);
+   
+INSERT INTO public.pedido
+(previsao_de_entrega, meio_pagamento, status, data_criacao, id_cliente)
+VALUES
+    ('2023-04-28', 'Cartão de Crédito', 'Finalizado', CURRENT_DATE, 3),
+    ('2023-04-28', 'Dinheiro', 'Finalizado', CURRENT_DATE, 3),
+    ('2023-04-28', 'Cartão de Crédito', 'Finalizado', CURRENT_DATE, 4),
+    ('2023-04-28', 'Cartão de Crédito', 'Finalizado', CURRENT_DATE, 5);
+
+-- ITEM PEDIDO

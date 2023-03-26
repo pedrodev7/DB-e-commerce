@@ -124,7 +124,6 @@ CREATE  TABLE item_carrinho (
 	data_insercao        date DEFAULT CURRENT_DATE   ,
 	id_carrinho          integer  NOT NULL  ,
 	CONSTRAINT pk_item_carrinho PRIMARY KEY ( id ),
-	CONSTRAINT unq_item_carrinho_produto UNIQUE ( id_produto ) 
  );
 
 ALTER TABLE item_carrinho ADD CONSTRAINT fk_item_carrinho_carrinho FOREIGN KEY ( id_carrinho ) REFERENCES carrinho( id );
