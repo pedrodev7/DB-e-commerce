@@ -23,7 +23,7 @@ ALTER TABLE cliente ADD CONSTRAINT fk_cliente_endereco FOREIGN KEY ( id_endereco
 
 CREATE  TABLE fornecedor ( 
 	id                   serial  NOT NULL  ,
-	cnpj                 integer  NOT NULL  ,
+	cnpj                 char(14)  NOT NULL  ,
 	id_endereco          integer  NOT NULL  ,
 	CONSTRAINT pk_fornecedor PRIMARY KEY ( id ),
 	CONSTRAINT unq_fornecedor_cnpj UNIQUE ( cnpj ) ,
@@ -32,7 +32,7 @@ CREATE  TABLE fornecedor (
 
 ALTER TABLE fornecedor ADD CONSTRAINT fk_fornecedor_endereco FOREIGN KEY ( id_endereco ) REFERENCES endereco( id );
 
--- PRODUTO / ESTOQUE / FORNECEDOR_PRODUTO
+-- PRODUTO / ESTOQUE / FORNECEDOR_PRODUTO / ESTOQUE_PRODUTO
 
 CREATE  TABLE produto ( 
 	id                   serial  NOT NULL  ,
@@ -45,12 +45,11 @@ CREATE  TABLE produto (
 
 CREATE  TABLE estoque ( 
 	id                   serial  NOT NULL  ,
-	quantidade           integer  NOT NULL  ,
-	id_produto           integer  NOT NULL  ,
+	id_endereco           integer  NOT NULL  ,
 	CONSTRAINT pk_estoque PRIMARY KEY ( id )
  );
 
-ALTER TABLE estoque ADD CONSTRAINT fk_estoque_quantidade FOREIGN KEY ( id_produto ) REFERENCES produto( id );
+ALTER TABLE estoque ADD CONSTRAINT fk_estoque_endereco FOREIGN KEY ( id_endereco ) REFERENCES endereco( id );
 
 CREATE  TABLE fornecedor_produto ( 
 	id_produto           integer  NOT NULL  ,
@@ -61,6 +60,16 @@ CREATE  TABLE fornecedor_produto (
 ALTER TABLE fornecedor_produto ADD CONSTRAINT fk_fornecedor_produto FOREIGN KEY ( id_fornecedor ) REFERENCES fornecedor( id );
 
 ALTER TABLE fornecedor_produto ADD CONSTRAINT fk_fornecedor_produto_produto FOREIGN KEY ( id_produto ) REFERENCES produto( id );
+
+CREATE  TABLE estoque_produto ( 
+	id_produto           integer  NOT NULL  ,
+	id_estoque        integer  NOT NULL  ,
+	CONSTRAINT pk_estoque_produto PRIMARY KEY ( id_produto, id_estoque )
+ );
+
+ALTER TABLE estoque_produto ADD CONSTRAINT fk_estoque_produto FOREIGN KEY ( id_estoque) REFERENCES estoque( id );
+
+ALTER TABLE estoque_produto ADD CONSTRAINT fk_estoque_produto_produto FOREIGN KEY ( id_produto ) REFERENCES produto( id );
 
 -- PEDIDO / ITEM_PEDIDO / CUPOM
 
@@ -118,12 +127,11 @@ CREATE  TABLE carrinho (
 ALTER TABLE carrinho ADD CONSTRAINT fk_carrinho_cliente FOREIGN KEY ( id_cliente ) REFERENCES cliente( id );
 
 CREATE  TABLE item_carrinho ( 
-	id                   serial  NOT NULL  ,
 	id_produto           integer  NOT NULL  ,
 	quantidade           integer  NOT NULL  ,
 	data_insercao        date DEFAULT CURRENT_DATE   ,
 	id_carrinho          integer  NOT NULL  ,
-	CONSTRAINT pk_item_carrinho PRIMARY KEY ( id ),
+	CONSTRAINT pk_item_carrinho PRIMARY KEY ( id_produto, id_carrinho )
  );
 
 ALTER TABLE item_carrinho ADD CONSTRAINT fk_item_carrinho_carrinho FOREIGN KEY ( id_carrinho ) REFERENCES carrinho( id );

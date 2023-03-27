@@ -1,5 +1,9 @@
 -- SETUP PARA CONSEGUIR RODAR O SQL MAIS DE UMA VEZ
 
+delete from fornecedor_produto;
+delete from fornecedor; 
+delete from estoque_produto;
+delete from estoque;
 delete from item_pedido;
 delete from pedido;
 delete from item_carrinho;
@@ -15,9 +19,10 @@ ALTER SEQUENCE cliente_id_seq RESTART WITH 1;
 ALTER SEQUENCE produto_id_seq RESTART WITH 1;
 ALTER SEQUENCE cupom_id_seq RESTART WITH 1;
 ALTER SEQUENCE carrinho_id_seq RESTART WITH 1;
-ALTER SEQUENCE item_carrinho_id_seq RESTART WITH 1;
 ALTER SEQUENCE pedido_id_seq RESTART WITH 1;
-ALTER SEQUENCE item_pedido_id_seq RESTART WITH 1;
+ALTER SEQUENCE estoque_id_seq RESTART WITH 1;
+ALTER SEQUENCE fornecedor_id_seq RESTART WITH 1;
+
 
 -- ENDEREÇO
 
@@ -29,7 +34,9 @@ VALUES
     ('12345678', 'Rua Três', '333', 'São Paulo', 'SP'),
     ('87654321', 'Rua Quatro', '444', 'Brasília', 'DF'),
     ('55555333', 'Rua Cinco', '555', 'Porto Alegre', 'RS'),
-    ('44444455', 'Rua Seis', '666', 'Salvador', 'BA');
+    ('44444455', 'Rua Seis', '666', 'Salvador', 'BA'),
+    ('78787887', 'Rua Sete', '777', 'Manaus', 'AM'),
+    ('65656565', 'Rua Oito', '888', 'Rio de Janeiro', 'RJ');
 
 -- CLIENTE
 INSERT INTO public.cliente
@@ -39,7 +46,8 @@ VALUES
     ('Luciana', '88888888552', 3),
     ('Pedro', '78787878999', 4),
     ('Maria', '55555444488', 2),
-    ('João', '12354654622', 2);
+    ('João', '12354654622', 2),
+    ('José', '52141215889', 2);
 
 -- PRODUTO
 INSERT INTO public.produto
@@ -128,3 +136,26 @@ VALUES
     (3, 1),
     (4, 2),
     (5, 2);
+
+-- ESTOQUE / ESTOQUE_PRODUTO
+INSERT INTO public.estoque
+(id_endereco)
+VALUES
+    (7),
+    (8);
+
+INSERT INTO public.estoque_produto
+(id_produto, id_estoque)
+VALUES
+    (1, 1),
+    (2, 1),
+    (3, 2),
+    (4, 2),
+    (5, 2);
+
+-- OPERAÇÕES APÓS INSERÇÕES
+delete from cliente where id = 6
+
+update produto
+set descricao = "GPU Nvidia 4080", valor = 4500
+where id = 4;
