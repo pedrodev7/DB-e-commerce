@@ -45,8 +45,9 @@ CREATE  TABLE produto (
 
 CREATE  TABLE estoque ( 
 	id                   serial  NOT NULL  ,
-	id_endereco           integer  NOT NULL  ,
-	CONSTRAINT pk_estoque PRIMARY KEY ( id )
+	id_endereco          integer  NOT NULL  ,
+	CONSTRAINT pk_estoque PRIMARY KEY ( id ),
+	CONSTRAINT unq_estoque UNIQUE ( id_endereco )
  );
 
 ALTER TABLE estoque ADD CONSTRAINT fk_estoque_endereco FOREIGN KEY ( id_endereco ) REFERENCES endereco( id );
@@ -62,9 +63,10 @@ ALTER TABLE fornecedor_produto ADD CONSTRAINT fk_fornecedor_produto FOREIGN KEY 
 ALTER TABLE fornecedor_produto ADD CONSTRAINT fk_fornecedor_produto_produto FOREIGN KEY ( id_produto ) REFERENCES produto( id );
 
 CREATE  TABLE estoque_produto ( 
+	id_estoque           integer  NOT NULL  ,
 	id_produto           integer  NOT NULL  ,
-	id_estoque        integer  NOT NULL  ,
-	CONSTRAINT pk_estoque_produto PRIMARY KEY ( id_produto, id_estoque )
+	quantidade           varchar  NOT NULL  ,
+	CONSTRAINT pk_estoque_produto PRIMARY KEY ( id_estoque, id_produto )
  );
 
 ALTER TABLE estoque_produto ADD CONSTRAINT fk_estoque_produto FOREIGN KEY ( id_estoque) REFERENCES estoque( id );
@@ -92,11 +94,10 @@ CREATE  TABLE pedido (
 	previsao_de_entrega  date  NOT NULL  ,
 	meio_pagamento       varchar(100)  NOT NULL  ,
 	status               varchar(100)  NOT NULL  ,
-	data_criacao		 date  NOT NULL  ,
 	id_cliente           integer  NOT NULL  ,
 	id_cupom             integer    ,
-	CONSTRAINT pk_pedido PRIMARY KEY ( id ),
-	CONSTRAINT unq_pedido UNIQUE ( id_cupom ) 
+	data_criacao         date DEFAULT CURRENT_DATE   ,
+	CONSTRAINT pk_pedido PRIMARY KEY ( id )
  );
 
 ALTER TABLE pedido ADD CONSTRAINT fk_pedido_cliente FOREIGN KEY ( id_cliente ) REFERENCES cliente( id );
@@ -128,9 +129,9 @@ ALTER TABLE carrinho ADD CONSTRAINT fk_carrinho_cliente FOREIGN KEY ( id_cliente
 
 CREATE  TABLE item_carrinho ( 
 	id_produto           integer  NOT NULL  ,
+	id_carrinho          integer  NOT NULL  ,
 	quantidade           integer  NOT NULL  ,
 	data_insercao        date DEFAULT CURRENT_DATE   ,
-	id_carrinho          integer  NOT NULL  ,
 	CONSTRAINT pk_item_carrinho PRIMARY KEY ( id_produto, id_carrinho )
  );
 
