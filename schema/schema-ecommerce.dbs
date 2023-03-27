@@ -77,18 +77,35 @@
 		</table>
 		<table name="estoque" prior="tbl" >
 			<column name="id" type="serial" jt="4" mandatory="y" />
-			<column name="quantidade" type="integer" jt="4" mandatory="y" />
-			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<column name="id_endereco" type="integer" jt="4" mandatory="y" />
 			<index name="pk_estoque" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_estoque_quantidade" to_schema="ecommerce-ada-926" to_table="produto" >
+			<index name="unq_estoque" unique="UNIQUE_KEY" >
+				<column name="id_endereco" />
+			</index>
+			<fk name="fk_estoque_endereco" to_schema="ecommerce-ada-926" to_table="endereco" >
+				<fk_column name="id_endereco" pk="id" />
+			</fk>
+		</table>
+		<table name="estoque_produto" prior="tbl" >
+			<column name="id_estoque" type="integer" jt="4" mandatory="y" />
+			<column name="id_produto" type="serial" jt="4" mandatory="y" />
+			<column name="quantidade" type="varchar" jt="12" mandatory="y" />
+			<index name="pk_estoque_produto" unique="PRIMARY_KEY" >
+				<column name="id_estoque" />
+				<column name="id_produto" />
+			</index>
+			<fk name="fk_estoque_produto_estoque" to_schema="ecommerce-ada-926" to_table="estoque" >
+				<fk_column name="id_estoque" pk="id" />
+			</fk>
+			<fk name="fk_estoque_produto_produto" to_schema="ecommerce-ada-926" to_table="produto" >
 				<fk_column name="id_produto" pk="id" />
 			</fk>
 		</table>
 		<table name="fornecedor" prior="tbl" >
 			<column name="id" type="serial" jt="4" mandatory="y" />
-			<column name="cnpj" type="integer" jt="4" mandatory="y" />
+			<column name="cnpj" type="varchar" length="14" jt="12" mandatory="y" />
 			<column name="id_endereco" prior="endereco" type="integer" jt="4" mandatory="y" />
 			<index name="pk_fornecedor" unique="PRIMARY_KEY" >
 				<column name="id" />
@@ -118,18 +135,15 @@
 			</fk>
 		</table>
 		<table name="item_carrinho" prior="tbl" >
-			<column name="id" type="serial" jt="4" mandatory="y" />
 			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<column name="id_carrinho" type="integer" jt="4" mandatory="y" />
 			<column name="quantidade" type="integer" jt="4" mandatory="y" />
 			<column name="data_insercao" type="date" jt="91" >
 				<defo><![CDATA[CURRENT_DATE]]></defo>
 			</column>
-			<column name="id_carrinho" type="integer" jt="4" mandatory="y" />
 			<index name="pk_item_carrinho" unique="PRIMARY_KEY" >
-				<column name="id" />
-			</index>
-			<index name="unq_item_carrinho_produto" unique="UNIQUE_KEY" >
 				<column name="id_produto" />
+				<column name="id_carrinho" />
 			</index>
 			<fk name="fk_item_carrinho_carrinho" to_schema="ecommerce-ada-926" to_table="carrinho" >
 				<fk_column name="id_carrinho" pk="id" />
@@ -197,6 +211,7 @@
 		<entity schema="ecommerce-ada-926" name="cupom" color="C1D8EE" x="560" y="528" />
 		<entity schema="ecommerce-ada-926" name="endereco" color="C1D8EE" x="64" y="80" />
 		<entity schema="ecommerce-ada-926" name="estoque" color="C1D8EE" x="1088" y="80" />
+		<entity schema="ecommerce-ada-926" name="estoque_produto" color="C1D8EE" x="1088" y="208" />
 		<entity schema="ecommerce-ada-926" name="fornecedor" color="C1D8EE" x="48" y="416" />
 		<entity schema="ecommerce-ada-926" name="fornecedor_produto" color="C1D8EE" x="960" y="416" />
 		<entity schema="ecommerce-ada-926" name="item_carrinho" color="C1D8EE" x="1088" y="560" />
@@ -210,8 +225,9 @@
 		</group>
 		<group name="Produto" color="800000" >
 			<entity schema="ecommerce-ada-926" name="produto" />
-			<entity schema="ecommerce-ada-926" name="estoque" />
 			<entity schema="ecommerce-ada-926" name="fornecedor_produto" />
+			<entity schema="ecommerce-ada-926" name="estoque" />
+			<entity schema="ecommerce-ada-926" name="estoque_produto" />
 		</group>
 		<group name="Pedido" color="00FF00" >
 			<entity schema="ecommerce-ada-926" name="pedido" />
