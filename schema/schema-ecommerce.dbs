@@ -105,7 +105,7 @@
 		</table>
 		<table name="fornecedor" prior="tbl" >
 			<column name="id" type="serial" jt="4" mandatory="y" />
-			<column name="cnpj" type="varchar" length="14" jt="12" mandatory="y" />
+			<column name="cnpj" type="char" length="14" jt="1" mandatory="y" />
 			<column name="id_endereco" prior="endereco" type="integer" jt="4" mandatory="y" />
 			<index name="pk_fornecedor" unique="PRIMARY_KEY" >
 				<column name="id" />
@@ -217,8 +217,8 @@
 		<entity schema="ecommerce-ada-926" name="produto" color="C1D8EE" x="800" y="80" />
 		<group name="Cliente / Fornecedor" color="008080" >
 			<entity schema="ecommerce-ada-926" name="cliente" />
-			<entity schema="ecommerce-ada-926" name="fornecedor" />
 			<entity schema="ecommerce-ada-926" name="endereco" />
+			<entity schema="ecommerce-ada-926" name="fornecedor" />
 		</group>
 		<group name="Produto" color="800000" >
 			<entity schema="ecommerce-ada-926" name="produto" />
@@ -228,8 +228,8 @@
 		</group>
 		<group name="Pedido" color="00FF00" >
 			<entity schema="ecommerce-ada-926" name="cupom" />
-			<entity schema="ecommerce-ada-926" name="item_pedido" />
 			<entity schema="ecommerce-ada-926" name="pedido" />
+			<entity schema="ecommerce-ada-926" name="item_pedido" />
 		</group>
 		<group name="Carrinho" color="4D1A4D" >
 			<entity schema="ecommerce-ada-926" name="carrinho" />
