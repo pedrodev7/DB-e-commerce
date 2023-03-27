@@ -1,5 +1,6 @@
 -- SETUP PARA CONSEGUIR RODAR O SQL MAIS DE UMA VEZ
 
+delete from item_pedido;
 delete from pedido;
 delete from item_carrinho;
 delete from cupom;
@@ -16,6 +17,7 @@ ALTER SEQUENCE cupom_id_seq RESTART WITH 1;
 ALTER SEQUENCE carrinho_id_seq RESTART WITH 1;
 ALTER SEQUENCE item_carrinho_id_seq RESTART WITH 1;
 ALTER SEQUENCE pedido_id_seq RESTART WITH 1;
+ALTER SEQUENCE item_pedido_id_seq RESTART WITH 1;
 
 -- ENDEREÇO
 
@@ -26,7 +28,8 @@ VALUES
 	('54321878', 'Rua Dois', '222', 'Olinda', 'PE'),
     ('12345678', 'Rua Três', '333', 'São Paulo', 'SP'),
     ('87654321', 'Rua Quatro', '444', 'Brasília', 'DF'),
-    ('55555333', 'Rua Cinco', '555', 'Porto Alegre', 'RS');
+    ('55555333', 'Rua Cinco', '555', 'Porto Alegre', 'RS'),
+    ('44444455', 'Rua Seis', '666', 'Salvador', 'BA');
 
 -- CLIENTE
 INSERT INTO public.cliente
@@ -93,3 +96,35 @@ VALUES
     ('2023-04-28', 'Cartão de Crédito', 'Finalizado', CURRENT_DATE, 5);
 
 -- ITEM PEDIDO
+INSERT INTO public.item_pedido
+(id_pedido, id_produto, quantidade, valor)
+VALUES
+    (1, 1, 1, 1000),
+    (1, 2, 1, 1200),
+    (2, 1, 1, 1000),
+    (2, 2, 1, 1200),
+    (3, 3, 1, 2000),
+    (3, 5, 1, 450),
+    (4, 3, 1, 2000),
+    (4, 5, 1, 450),
+    (5, 1, 1, 1000),
+    (5, 2, 1, 1200),
+    (6, 1, 1, 1000),
+    (6, 2, 1, 1200);
+
+-- FORNECEDOR
+INSERT INTO public.fornecedor
+(cnpj, id_endereco)
+VALUES
+    ('12345678901234', 5),
+    ('55555555554444', 6);
+
+-- FORNECEDOR PRODUTO
+INSERT INTO public.fornecedor_produto
+(id_produto, id_fornecedor)
+VALUES
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (4, 2),
+    (5, 2);
