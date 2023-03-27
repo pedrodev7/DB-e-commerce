@@ -90,7 +90,7 @@
 		</table>
 		<table name="estoque_produto" prior="tbl" >
 			<column name="id_estoque" type="integer" jt="4" mandatory="y" />
-			<column name="id_produto" type="serial" jt="4" mandatory="y" />
+			<column name="id_produto" type="integer" jt="4" mandatory="y" />
 			<column name="quantidade" type="varchar" jt="12" mandatory="y" />
 			<index name="pk_estoque_produto" unique="PRIMARY_KEY" >
 				<column name="id_estoque" />
@@ -121,8 +121,8 @@
 			</fk>
 		</table>
 		<table name="fornecedor_produto" prior="tbl" >
-			<column name="id_produto" type="serial" jt="4" mandatory="y" />
-			<column name="id_fornecedor" type="serial" jt="4" mandatory="y" />
+			<column name="id_produto" type="integer" jt="4" mandatory="y" />
+			<column name="id_fornecedor" type="integer" jt="4" mandatory="y" />
 			<index name="pk_fornecedor_produto" unique="PRIMARY_KEY" >
 				<column name="id_produto" />
 				<column name="id_fornecedor" />
@@ -153,8 +153,8 @@
 			</fk>
 		</table>
 		<table name="item_pedido" prior="tbl" >
-			<column name="id_pedido" prior="id_pedid" type="serial" jt="4" mandatory="y" />
-			<column name="id_produto" type="serial" jt="4" mandatory="y" />
+			<column name="id_pedido" prior="id_pedid" type="integer" jt="4" mandatory="y" />
+			<column name="id_produto" type="integer" jt="4" mandatory="y" />
 			<column name="quantidade" type="integer" jt="4" mandatory="y" />
 			<column name="valor" type="numeric" jt="2" mandatory="y" />
 			<index name="pk_item_pedido" unique="PRIMARY_KEY" >
@@ -180,9 +180,6 @@
 			</column>
 			<index name="pk_pedido" unique="PRIMARY_KEY" >
 				<column name="id" />
-			</index>
-			<index name="unq_pedido" unique="UNIQUE_KEY" >
-				<column name="id_cupom" />
 			</index>
 			<fk name="fk_pedido_cliente" to_schema="ecommerce-ada-926" to_table="cliente" >
 				<fk_column name="id_cliente" pk="id" />
@@ -219,20 +216,20 @@
 		<entity schema="ecommerce-ada-926" name="pedido" color="C1D8EE" x="464" y="80" />
 		<entity schema="ecommerce-ada-926" name="produto" color="C1D8EE" x="800" y="80" />
 		<group name="Cliente / Fornecedor" color="008080" >
-			<entity schema="ecommerce-ada-926" name="endereco" />
 			<entity schema="ecommerce-ada-926" name="cliente" />
 			<entity schema="ecommerce-ada-926" name="fornecedor" />
+			<entity schema="ecommerce-ada-926" name="endereco" />
 		</group>
 		<group name="Produto" color="800000" >
 			<entity schema="ecommerce-ada-926" name="produto" />
-			<entity schema="ecommerce-ada-926" name="fornecedor_produto" />
 			<entity schema="ecommerce-ada-926" name="estoque" />
+			<entity schema="ecommerce-ada-926" name="fornecedor_produto" />
 			<entity schema="ecommerce-ada-926" name="estoque_produto" />
 		</group>
 		<group name="Pedido" color="00FF00" >
-			<entity schema="ecommerce-ada-926" name="pedido" />
-			<entity schema="ecommerce-ada-926" name="item_pedido" />
 			<entity schema="ecommerce-ada-926" name="cupom" />
+			<entity schema="ecommerce-ada-926" name="item_pedido" />
+			<entity schema="ecommerce-ada-926" name="pedido" />
 		</group>
 		<group name="Carrinho" color="4D1A4D" >
 			<entity schema="ecommerce-ada-926" name="carrinho" />
