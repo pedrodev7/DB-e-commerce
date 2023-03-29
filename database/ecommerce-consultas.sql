@@ -86,7 +86,8 @@ limit 1;
 -- 16 Exibir informações de um pedido específico, pedido com id 952, com os dados 
 -- (não tem problema repetir dados em mais de uma linha): nome do cliente, id do pedido, previsão de entrega, 
 -- status do pedido, descrição dos produtos comprados, quantidade comprada produto, valor total pago no produto;
-
+select c.nome, p.id, p.previsao_entrega, p.status, pr.descricao, ip.quantidade , ip.valor
+from pedido p, cliente c, produto pr, item_pedido ip where p.id = 952;
 
 -- 17 Relatório de clientes que realizaram algum pedido em 2022, com os dados: 
 -- id_cliente, nome_cliente, data da última compra de 2022;
