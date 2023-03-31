@@ -91,6 +91,11 @@ from pedido p, cliente c, produto pr, item_pedido ip where p.id = 952;
 
 -- 17 Relatório de clientes que realizaram algum pedido em 2022, com os dados: 
 -- id_cliente, nome_cliente, data da última compra de 2022;
+select p.id_cliente, c.nome , p.data_criacao from pedido p 
+join cliente c on c.id = p.id_cliente
+where TO_CHAR(p.data_criacao, 'YYYY') = '2022' 
+and p.data_criacao = (select MAX(data_criacao) from pedido p2 where p2.id_cliente = p.id_cliente and TO_CHAR(p2.data_criacao, 'YYYY') = '2022' ) 
+order by id_cliente asc;
 
 
 -- 18 Relatório com os TOP 10 clientes que mais gastaram esse ano, com os dados: nome do cliente, valor total gasto;
@@ -115,5 +120,12 @@ join item_pedido ip on p.id = ip.id_pedido and p.status ='SUCESSO';
 
 -- 21 Relatório dos clientes gastaram acima de R$ 10000 em um pedido, com os dados: 
 -- id_cliente, nome do cliente, valor máximo gasto em um pedido;
+select p.id_cliente, c.nome, sum(ip.quantidade * ip.valor) as valor_total from pedido p 
+join cliente c on p.id_cliente = c.id
+join item_pedido ip on ip.id_pedido = p.id
+group by p.id,p.id_cliente,c.nome
+having sum(ip.quantidade * ip.valor)>10000
+order by valor_total desc;
+
 
 -- 22 Listar TOP 10 cupons mais utilizados e o total descontado por eles.
