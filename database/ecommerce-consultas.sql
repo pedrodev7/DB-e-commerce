@@ -17,16 +17,10 @@ select MAX(valor) from item_pedido;
 select distinct status from pedido;
 
 -- 7 Listar o maior, menor e valor médio dos produtos disponíveis.
--- select * from produto p;
--- select max(valor) from produto;
--- select min(valor) from produto;
--- select avg(valor) from produto;
-
 select max(valor) as MaiorValor, min(valor) as MenorValor, avg(valor) as MediaValor from produto;
 
 -- 8 Listar fornecedores com os dados: nome, cnpj, logradouro, numero, cidade e uf de todos os fornecedores;
 -- select * from fornecedor f;
-
 select f.nome, f.cnpj, e.logradouro , e.numero , e.cidade , e.uf  from fornecedor f
 join endereco e on f.id_endereco = e.id;
 
@@ -42,7 +36,6 @@ join endereco ee on e.id_endereco = ee.id;
 -- quantidade total do produto em todos os estoques;
 -- select * from item_estoque ie where id_produto = 171;
 -- select * from produto where id = 171;
-
 select p.descricao , p.codigo_barras, sum(ie.quantidade) from produto p
 left join item_estoque ie on p.id = ie.id_produto 
 group by p.id;
@@ -51,7 +44,6 @@ group by p.id;
 -- descrição do produto, quantidade no carrinho, valor do produto.
 -- select * from item_carrinho ic where id_cliente = 96;
 -- select * from cliente where cpf = '26382080861';
-
 select p.descricao, ic.quantidade, p.valor  from produto p 
 join item_carrinho ic on p.id = ic.id_produto
 join cliente c on c.cpf = '26382080861' and c.id = ic.id_cliente;
@@ -117,7 +109,6 @@ group by p.descricao, p.id;
 select avg(ip.quantidade * ip.valor) from pedido p 
 join item_pedido ip on p.id = ip.id_pedido and p.status ='SUCESSO';
 
-
 -- 21 Relatório dos clientes gastaram acima de R$ 10000 em um pedido, com os dados: 
 -- id_cliente, nome do cliente, valor máximo gasto em um pedido;
 select p.id_cliente, c.nome, sum(ip.quantidade * ip.valor) as valor_total from pedido p 
@@ -127,5 +118,28 @@ group by p.id,p.id_cliente,c.nome
 having sum(ip.quantidade * ip.valor)>10000
 order by valor_total desc;
 
-
 -- 22 Listar TOP 10 cupons mais utilizados e o total descontado por eles.
+
+-- 23 Listar cupons que foram utilizados mais que seu limite;
+select c.id, count(p.id_cupom) as qtd_usado, c.limite_maximo_usos from cupom c
+join pedido p on c.id = p.id_cupom
+group by c.id, c.limite_maximo_usos
+having c.limite_maximo_usos < count(p.id_cupom);
+
+-- 24 Listar todos os ids dos pedidos que foram feitos por pessoas que moram em São Paulo 
+-- (unidade federativa, uf, SP) e compraram o produto com código de barras '97692630963921';
+select p.id from pedido p
+join item_pedido ip on p.id = ip.id_pedido
+join produto pr on ip.id_produto = pr.id 
+join cliente c on p.id_cliente = c.id
+join endereco e on c.id_endereco = e.id
+where e.uf = 'SP' and pr.codigo_barras = '97692630963921';
+
+-- 25 Faça um relatório de sua escolha, crie uma view para ele e faça uma consulta nessa view;
+create view cliente_fornecedor as 
+select 'CLIENTE' as tipo_cliente , c.id, c.nome, c.cpf as document_id
+from cliente c
+union
+select 'FORNECEDOR' as tipo_cliente, f.id, f.nome, f.cnpj 
+from fornecedor f
+order by tipo_cliente asc;
